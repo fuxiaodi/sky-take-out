@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -43,26 +44,32 @@ public class EmployeeController {
     @PostMapping("/login")
     @ApiOperation(value = "员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
-        log.info("员工登录：{}", employeeLoginDTO);
 
-        Employee employee = employeeService.login(employeeLoginDTO);
+        try {
+            log.info("员工登录：{}", employeeLoginDTO);
 
-        //登录成功后，生成jwt令牌
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
-        String token = JwtUtil.createJWT(
-                jwtProperties.getAdminSecretKey(),
-                jwtProperties.getAdminTtl(),
-                claims);
+            Employee employee = employeeService.login(employeeLoginDTO);
 
-        EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
-                .id(employee.getId())
-                .userName(employee.getUsername())
-                .name(employee.getName())
-                .token(token)
-                .build();
+            //登录成功后，生成jwt令牌
+            Map<String, Object> claims = new HashMap<>();
+            claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+            String token = JwtUtil.createJWT(
+                    jwtProperties.getAdminSecretKey(),
+                    jwtProperties.getAdminTtl(),
+                    claims);
 
-        return Result.success(employeeLoginVO);
+            EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
+                    .id(employee.getId())
+                    .userName(employee.getUsername())
+                    .name(employee.getName())
+                    .token(token)
+                    .build();
+            log.info("登录成功");
+            return Result.success(employeeLoginVO);
+        }catch (Exception e) {
+            log.error("员工登录失败：{}", e.getMessage(), e);
+            return Result.error("登录失败，请联系管理员");
+        }
     }
 
     /**
@@ -73,6 +80,20 @@ public class EmployeeController {
     @PostMapping("/logout")
     @ApiOperation("员工退出")
     public Result<String> logout() {
+        return Result.success();
+    }
+
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping //在类的前面已经加了@RequestMapping("/admin/employee")，这就不用加
+    @ApiOperation("新增员工")
+    public Result save(@RequestBody EmployeeDTO employeeDTO){ //如果前端提交的是json格式
+        log.info("新增员工: {}", employeeDTO);
+        employeeService.save(employeeDTO);
         return Result.success();
     }
 
