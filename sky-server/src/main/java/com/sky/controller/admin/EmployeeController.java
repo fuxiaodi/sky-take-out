@@ -24,7 +24,8 @@ import java.util.Map;
 /**
  * 员工管理
  */
-@RestController
+@RestController  //表示这是一个 REST 接口 控制器，常配合 @RequestMapping / @GetMapping / @PostMapping 等定义路由。
+// 等价于 @Controller + @ResponseBody：方法返回值直接写入 HTTP 响应体，不走页面视图解析。
 @RequestMapping("/admin/employee")
 @Slf4j
 @Api(tags = "员工相关接口")

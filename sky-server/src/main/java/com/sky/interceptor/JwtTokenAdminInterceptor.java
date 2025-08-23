@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * jwt令牌校验的拦截器
  */
-@Component
+@Component  //纯工具、适配器、第三方客户端等“通用组件”：@Component,通用组件，表示“这是一个要被容器管理的类”。
 @Slf4j
 public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 

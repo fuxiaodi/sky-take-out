@@ -18,10 +18,10 @@ import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 
-@Service
+@Service //@Service 是 Spring 的构件标注（stereotype），把一个类标记为“业务服务层”的 Bean，让 Spring 在组件扫描时自动注册、可被依赖注入。
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
+    @Autowired //@Autowired 用于依赖注入：让 Spring 把容器里的 Bean 自动装配到你的类里。
     private EmployeeMapper employeeMapper;
 
     /**

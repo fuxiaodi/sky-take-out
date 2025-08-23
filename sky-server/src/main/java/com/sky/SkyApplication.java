@@ -5,12 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
-@EnableTransactionManagement //开启注解方式的事务管理
+@SpringBootApplication //the main class responsible for launching the application.
+@EnableTransactionManagement //开启注解方式的事务管理，注解告诉 Spring 开启对 @Transactional 注解的解析和代理。
 @Slf4j
 public class SkyApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SkyApplication.class, args);
+        SpringApplication.run(SkyApplication.class, args); //静态方法
         log.info("server started");
     }
 }
