@@ -31,7 +31,7 @@ import java.util.Map;
 @Api(tags = "员工相关接口")
 public class EmployeeController {
 
-    @Autowired
+    @Autowired  //Please inject (provide) an instance of this bean here, automatically.
     private EmployeeService employeeService;
     @Autowired
     private JwtProperties jwtProperties;
