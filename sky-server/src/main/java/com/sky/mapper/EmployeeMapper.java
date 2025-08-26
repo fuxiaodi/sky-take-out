@@ -40,4 +40,17 @@ public interface EmployeeMapper {
      * @param employee
      */
     void update(Employee employee);  //如果是动态的，就使用xml文件写
+
+    /**
+     * 根据id查询员工信息
+     * @param id
+     * @return
+     */
+    @Select("select * from employee where id = #{id}")
+    Employee getById(long id);
+
+
+
+
+
 }
