@@ -1,12 +1,22 @@
 package com.sky.aspect;
 
 
+import com.sky.annotation.AutoFill;
+import com.sky.constant.AutoFillConstant;
+import com.sky.context.BaseContext;
+import com.sky.enumeration.OperationType;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * 自定义切面，实现公共字段自动填充处理逻辑
@@ -28,8 +38,55 @@ public class AutoFillAspect {
      * 前置通知,在通知中进行公共字段的赋值
      */
     @Before("autoFillPointCut()") //
-    public void autoFill(JoinPoint joinPoint){ //拦截的参数值
+    public void autoFill(JoinPoint joinPoint){ //拦截的参数值，jointPoint 连接点对象
         log.info("开始对公共字段进行填充...");
+        //获取到当前被拦截的方法上的数据库操作类型，update还是delete
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature(); //方法签名对象
+        AutoFill autofill = signature.getMethod().getAnnotation(AutoFill.class); //获取方法上的注解对象
+        OperationType operationType = autofill.value(); //获取数据库操作类型
+
+        //获取当前被拦截的方法的参数 -- 实体（entity)对象
+        Object[] args = joinPoint.getArgs();
+
+        if(args == null || args.length == 0){
+            return;
+        }
+
+        Object entity = args[0];  //用Object因为实体类型不定
+
+        //准备赋值的数据
+        LocalDateTime now = LocalDateTime.now();
+        long currentId = BaseContext.getCurrentId();
+
+        //根据当前不同的操作类型，为对应的属性通过反射来赋值
+        if(operationType == OperationType.INSERT){
+            try {
+                Method setCreateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class); //(方法名，参数类型
+                Method setCreateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
+                Method updateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
+                Method updateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
+
+                setCreateTime.invoke(entity, now);
+                setCreateUser.invoke(entity, currentId);
+                updateTime.invoke(entity, now);
+                updateUser.invoke(entity, currentId);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+        }else{
+
+            try {
+                Method updateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
+                Method updateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class);
+
+                updateTime.invoke(entity, now);
+                updateUser.invoke(entity, currentId);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+        }
 
     }
 }
