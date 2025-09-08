@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
  * 自定义注解，用于标识某个方法需要进行功能字段自动填充处理
  */
 @Target(ElementType.METHOD) //指定注解只能加到方法上
-@Retention(RetentionPolicy.RUNTIME)  //@Retention(RetentionPolicy.RUNTIME) is a meta-annotation that tells Java how long to keep anannotation
+@Retention(RetentionPolicy.RUNTIME)  //@Retention(RetentionPolicy.RUNTIME) is a meta-annotation
+// that tells Java how long to keep annotation
 
 public @interface AutoFill {
     //数据库操作类型：UPDATE, INSERT
