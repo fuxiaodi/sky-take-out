@@ -59,6 +59,6 @@ public interface CategoryMapper {
      * @return
      */
     @Select("select * from category")
-    List<Category> list();
+    List<Category> listAll();
 
 }

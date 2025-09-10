@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,9 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired //已经导入了坐标和配置了数据源，并且写了配置类RedisConfiguration
+    private RedisTemplate redisTemplate;
+
     /**
      * 根据分类id查询菜品
      *
@@ -31,13 +36,34 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
+
+        //缓存逻辑：每个分类下的菜品保存一份缓存数据，数据库中的菜品数据有变更时及时清理缓存数据
+
+        //构造redis中的key,规则：dish_分类id
+        String key = "dish_" + categoryId;
+
+        //查询redis中是否存在菜品数据
+        List<DishVO> list = (List<DishVO>) redisTemplate.opsForValue().get(key);
+
+        //如果存在，直接返回，无需查询数据库
+        if(list != null && list.size() > 0){
+            return Result.success(list);
+        }
+
+        //如果不存在，查询数据库，将查询的数据存入redis
+
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
         dish.setStatus(StatusConstant.ENABLE);//查询起售中的菜品
 
-        List<DishVO> list = dishService.listWithFlavor(dish);
+        list = dishService.listWithFlavor(dish); //只有categoryId和起售的属性
+
+        //把数据存入redis
+        redisTemplate.opsForValue().set(key, list);
 
         return Result.success(list);
+
+
     }
 
 }

@@ -128,7 +128,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public List<Category> list(Integer type) {
         if(type == null){
-            return categoryMapper.list();
+            return categoryMapper.listAll();
         }
         return categoryMapper.list(type);
     }
