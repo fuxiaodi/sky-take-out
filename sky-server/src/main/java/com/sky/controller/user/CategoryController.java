@@ -27,7 +27,6 @@ public class CategoryController {
     @GetMapping("/list")
     @ApiOperation("查询分类")
     public Result<List<Category>> list(Integer type) {
-        type = type == null? 1: type;
         List<Category> list = categoryService.list(type);
         return Result.success(list);
     }
