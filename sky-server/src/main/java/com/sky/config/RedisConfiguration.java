@@ -22,7 +22,7 @@ public class RedisConfiguration {
 //        redisTemplate.setKeySerializer(new StringRedisSerializer());
         StringRedisSerializer str = new StringRedisSerializer();
         redisTemplate.setKeySerializer(str);
-//        redisTemplate.setValueSerializer(str);
+        redisTemplate.setValueSerializer(str);
         redisTemplate.setHashKeySerializer(str);
 //        redisTemplate.setHashValueSerializer(str);
         return redisTemplate;

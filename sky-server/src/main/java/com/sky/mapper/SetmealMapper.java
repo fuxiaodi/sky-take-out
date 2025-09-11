@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.sky.entity.Setmeal;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import com.sky.vo.DishItemVO;
@@ -35,4 +36,6 @@ public interface SetmealMapper {
             "where sd.setmeal_id = #{setmealId}")
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 
+
+    void insert(Setmeal setmeal);
 }

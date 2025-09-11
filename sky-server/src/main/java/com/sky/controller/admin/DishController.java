@@ -8,6 +8,7 @@ import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import com.sky.entity.Dish;
 
 @RestController
 @RequestMapping("/admin/dish")
-@ApiOperation("新增菜品")
+@Api(tags = "新增菜品")
 @Slf4j
 public class DishController {
 
@@ -96,6 +98,19 @@ public class DishController {
         clearCache("dish_*"); //使用通配符
         return Result.success();
     }
+
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    public Result<List<Dish>> list(Long categoryId) {
+        List<Dish> dishList = dishService.list(categoryId);
+        return Result.success(dishList);
+    }
+
 
     /**
      * 清理缓存数据
