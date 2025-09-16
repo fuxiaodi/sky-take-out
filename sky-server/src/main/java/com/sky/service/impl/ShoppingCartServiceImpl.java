@@ -56,7 +56,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
 
         Long userId = BaseContext.getCurrentId();
-        shoppingCart.setId(userId);
+        shoppingCart.setUserId(userId);
 
         List<ShoppingCart> shoppingCartList = shoppingCartMapper.list(shoppingCart);
         if(shoppingCartList != null && shoppingCartList.size() > 0){
@@ -82,7 +82,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
             shoppingCart.setNumber(1);
             shoppingCart.setCreateTime(LocalDateTime.now());
-            shoppingCartMapper.insert(shoppingCart);
+            try {
+                shoppingCartMapper.insert(shoppingCart);
+            } catch (Exception e) {
+                e.printStackTrace();
+//                throw new RuntimeException(e);
+            }
+            log.info("successfully insert a new data, generatedId={}", shoppingCart.getId()); // >0 说明确实插入
         }
     }
 

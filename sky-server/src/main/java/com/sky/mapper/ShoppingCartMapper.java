@@ -2,10 +2,7 @@ package com.sky.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.*;
 
 import com.sky.entity.ShoppingCart;
 
@@ -37,7 +34,9 @@ public interface ShoppingCartMapper {
             +
             "values " +
             "(#{userId}, #{dishId}, #{setmealId}, #{name}, #{image}, #{amount}, #{number}, #{dishFlavor}, #{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(ShoppingCart shoppingCart);
+
 
     /**
      * 清空购物车
