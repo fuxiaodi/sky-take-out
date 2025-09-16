@@ -51,11 +51,12 @@ public class ShoppingCartController {
      *
      * @return
      */
-//    @DeleteMapping("/clean")
-//    public Result<String> clean() {
-//        shoppingCartService.cleanShoppingCart();
-//        return Result.success();
-//    }
+    @DeleteMapping("/clean")
+    @ApiOperation("清空购物车")
+    public Result<String> clean() {
+        shoppingCartService.cleanShoppingCart();
+        return Result.success();
+    }
 
     /**
      * 删除购物车中一个商品
