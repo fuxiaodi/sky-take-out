@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
+import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Delete;
@@ -78,4 +79,15 @@ public interface DishMapper {
      */
     List<Dish> list(Dish dish);
 
+    
+    /**
+     * 根据套餐id查询菜品
+     *
+     * @param setmealId
+     */
+    @Select("select * from setmeal_dish where setmeal_id = #{setmealId}")
+    List<SetmealDish> getDishBySetmealId(Long setmealId);
+
+
+    List<Dish> getBySetmealId(Long id);
 }
