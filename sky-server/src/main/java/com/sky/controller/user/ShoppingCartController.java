@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.service.ShoppingCartService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class ShoppingCartController {
      * @return
      */
     @GetMapping("/list")
+    @ApiOperation("查看购物车")
     public Result<List<ShoppingCart>> list() {
         List<ShoppingCart> shopList = shoppingCartService.showShoppingCart();
         return Result.success(shopList);
