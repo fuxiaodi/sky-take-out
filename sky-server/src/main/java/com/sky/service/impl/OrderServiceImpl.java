@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         }
 
-        // 通过websocket通知商家
+        // 通过websocket通知商家催单了，通过websocket推送
         Map<String, Object> map = new HashMap<>();
         map.put("type", 2); // 1:来单提醒 2: 客户催单
         map.put("orderId", id);

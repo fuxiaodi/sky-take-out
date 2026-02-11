@@ -64,7 +64,7 @@ public class WebSocketServer { //服务端组件，用于跟客户通信，相�
         Collection<Session> sessions = sessionMap.values();
         for (Session session : sessions) {
             try {
-                //服务器向客户端发送消息
+                //服务器向客户端(商家）发送消息
                 session.getBasicRemote().sendText(message);
             } catch (Exception e) {
                 e.printStackTrace();
