@@ -157,7 +157,7 @@ public class OrderServiceImpl implements OrderService {
         map.put("orderId", id);
         map.put("content", "订单号: " + ordersDB.getNumber());
         String msg = JSON.toJSONString(map); //把字符串转送到页面
-        webSocketServer.sendToAllClient(msg); //通过websocket向客户端推送消息
+        webSocketServer.sendToAllClient(msg); //通过websocket向客户端(admin)推送消息
     }
 
 }
