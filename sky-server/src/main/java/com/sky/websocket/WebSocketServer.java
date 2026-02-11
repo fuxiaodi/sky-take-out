@@ -1,10 +1,8 @@
 package com.sky.websocket;
 
 import org.springframework.stereotype.Component;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Collection;
@@ -15,8 +13,8 @@ import java.util.Map;
  * WebSocket服务
  */
 @Component
-@ServerEndpoint("/ws/{sid}")
-public class WebSocketServer {
+@ServerEndpoint("/ws/{sid}") //服务端的通信入口（连接点），一个html中新建websocket对象需要输入的url
+public class WebSocketServer { //服务端组件，用于跟客户通信，相当于controller用http跟客户端通信
 
     //存放会话对象
     private static Map<String, Session> sessionMap = new HashMap();
@@ -49,6 +47,12 @@ public class WebSocketServer {
     public void onClose(@PathParam("sid") String sid) {
         System.out.println("连接断开:" + sid);
         sessionMap.remove(sid);
+    }
+
+    @OnError
+    public void onError(Session session, Throwable error) {
+        System.out.println("WebSocket error: " + error.getMessage());
+        error.printStackTrace();
     }
 
     /**

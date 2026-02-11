@@ -26,4 +26,15 @@ public interface OrderMapper {
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime orderTime);
 
     void update(Orders orders);
+
+    /**
+     * 根据订单号查询订单
+     *
+     * @param orderNumber
+     */
+    @Select("select * from orders where number = #{orderNumber}")
+    Orders getByNumber(String orderNumber);
+
+    @Select("select * from orders where id=#{id}")
+    Orders getById(Long id);
 }

@@ -3,7 +3,7 @@ package com.sky.service;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.vo.OrderSubmitVO;
 
-public interface OrderSevice {
+public interface OrderService {
 
     /**
      * 用户下单
@@ -11,4 +11,17 @@ public interface OrderSevice {
      * @return
      */
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
+
+    /**
+     * 支付成功，修改订单状态
+     *
+     * @param outTradeNo
+     */
+    void paySuccess(String outTradeNo);
+
+    /**
+     * 用户催单
+     * @param id
+     */
+    void reminder(Long id);
 }
