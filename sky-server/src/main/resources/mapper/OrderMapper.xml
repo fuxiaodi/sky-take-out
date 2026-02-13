@@ -40,4 +40,21 @@
         where id = #{id}
     </update>
 
+<!--    id是方法名， resultType是返回类型-->
+    <select id="sumByMap" resultType="double">
+<!--        下面是sql语句-->
+        select sum(amount) from orders
+        <where>
+            <if test="begin != null">
+                and order_time &gt; #{begin}
+            </if>
+            <if test="end != null">
+                and order_time &lt; #{end}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+
+    </select>
 </mapper>

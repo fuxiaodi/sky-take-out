@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)  //@Retention(RetentionPolicy.RUNTIME) is a meta-annotation
 // that tells Java how long to keep annotation
 
+//Define a new annotation named AutoFill.
 public @interface AutoFill {
     //数据库操作类型：UPDATE, INSERT
     OperationType value();

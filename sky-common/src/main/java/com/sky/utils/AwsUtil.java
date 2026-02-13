@@ -16,8 +16,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Data
-@AllArgsConstructor
+@Data //@Data is a Lombok annotation that automatically generates:
+@AllArgsConstructor //It generates a constructor with all fields as parameters.
 @Slf4j
 public class AwsUtil {
 
